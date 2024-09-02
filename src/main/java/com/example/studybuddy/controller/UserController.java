@@ -29,7 +29,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("Username already exists");
         }
         userRepository.save(user);
-        return ResponseEntity.ok().body("User registered successfully");
+        return ResponseEntity.ok().body("User registered nicely tbh");
     }
 
     @GetMapping("/auth/signin")
