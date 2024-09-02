@@ -6,8 +6,6 @@ import com.example.studybuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.Optional;
 
 @RestController
@@ -21,7 +19,6 @@ public class UserController {
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @PostMapping("/auth/signup")
     private ResponseEntity<String> register(@RequestBody Users user) {
