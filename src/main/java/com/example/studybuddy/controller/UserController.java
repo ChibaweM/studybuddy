@@ -29,16 +29,16 @@ public class UserController {
         return ResponseEntity.ok().body("User registered nicely tbh");
     }
 
-    @GetMapping("/auth/signin")
-    private ResponseEntity<String> login(@RequestBody Users user) {
+    @PostMapping("/auth/signin")
+    private ResponseEntity<Users> login(@RequestBody Users user) {
         Users existingUser = userRepository.findByUsername(user.getUsername()).orElse(null);
         if(existingUser == null) {
-            return ResponseEntity.badRequest().body("Username not found");
+            return ResponseEntity.badRequest().body(null);
         }
         if(!user.getPassword().equals(existingUser.getPassword())) {
-            return ResponseEntity.badRequest().body("Not the password for this user");
+            return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.ok().body("got the correct shit my bro");
+        return ResponseEntity.ok().body(existingUser);
     }
 
     @GetMapping("/getUser/{requestedId}")
