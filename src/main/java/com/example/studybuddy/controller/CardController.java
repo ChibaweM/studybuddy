@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.studybuddy.model.Cards;
 import com.example.studybuddy.model.Topics;
+import com.example.studybuddy.model.Users;
 import com.example.studybuddy.repository.CardRepository;
 import com.example.studybuddy.repository.TopicRepository;
 
@@ -57,14 +58,24 @@ public class CardController {
     }
 
     @GetMapping("/getAllTopics")
-    private Iterable<Cards> findAll(){
-        return cardRepository.findAll();
+    private ResponseEntity<Iterable<Cards>> findAll(){
+        return ResponseEntity.ok().body(cardRepository.findAll());
+    }
+
+    @DeleteMapping("/deleteAllByUser/{requestedId}")
+    private ResponseEntity<String> deleteAllByUser(@PathVariable Long requestedId){
+        Optional<Topics> topicOptional = topicRepository.findById(requestedId);
+        if(!topicOptional.isPresent()){
+            return ResponseEntity.badRequest().body("Couldn't find user");
+        }
+        cardRepository.deleteAll(topicOptional.get().getCards());
+        return ResponseEntity.ok().body("Deleted Cards for Topic: " + topicOptional.get().getTopicName());
     }
 
     @DeleteMapping("/deleteAll")
     private ResponseEntity<String> deleteAll(){
         cardRepository.deleteAll();
-        return ResponseEntity.ok().body("Deleted card");
+        return ResponseEntity.ok().body("Deleted all cards in Database");
     }
 
     @DeleteMapping("/delete/{requestedId}")

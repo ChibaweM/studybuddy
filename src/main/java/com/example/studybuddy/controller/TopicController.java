@@ -61,16 +61,27 @@ public class TopicController {
         return userOptional.get().getTopics();
     }
 
-    @DeleteMapping("/deleteAll")
-    private void deleteAll(){
-        topicRepository.deleteAll();
+    @DeleteMapping("/deleteAllByUser/{requestedId}")
+    private ResponseEntity<String> deleteAllByUser(@PathVariable Long requestedId){
+        Optional<Users> userOptional = userRepository.findById(requestedId);
+        if(!userOptional.isPresent()){
+            return ResponseEntity.badRequest().body("Couldn't find user");
+        }
+        topicRepository.deleteAll(userOptional.get().getTopics());
+        return ResponseEntity.ok().body("Deleted topics for user: " + userOptional.get().getUsername());
     }
 
-    @DeleteMapping("/delete/{requestedId}")
+    @DeleteMapping("/deleteAll")
+    private ResponseEntity<String> deleteAll(){
+        topicRepository.deleteAll();
+        return ResponseEntity.ok().body("Deleted All in Database");
+    }
+
+    @DeleteMapping("/deleteById/{requestedId}")
     private ResponseEntity<String> deleteById(@PathVariable Long requestedId){
         Optional<Topics> deleteTopic = topicRepository.findById(requestedId);
 
-        if(deleteTopic.isPresent()){
+        if(!deleteTopic.isPresent()){
             return ResponseEntity.badRequest().body("Failed to delete");
         }
         topicRepository.delete(deleteTopic.get());
