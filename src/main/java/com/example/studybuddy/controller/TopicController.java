@@ -23,7 +23,6 @@ public class TopicController {
     private final TopicRepository topicRepository;
     private final UserRepository userRepository;
 
-
     public TopicController(UserRepository userRepository,  TopicRepository topicRepository){
         this.topicRepository = topicRepository;
         this.userRepository = userRepository;
@@ -37,7 +36,6 @@ public class TopicController {
         }else if(topic == null){
             return ResponseEntity.badRequest().body("Failed to create topic: Topic not created properly");
         }
-
         topic.setUserId(optionalUser.get().getId());
         topicRepository.save(topic);
         return ResponseEntity.ok().body("Topic added to Application");
@@ -54,8 +52,28 @@ public class TopicController {
         return topicRepository.findAll();
     }
 
+    @GetMapping("/getAllUserTopics/{requestedId}")
+    private Iterable<Topics> findAllbyUser(@PathVariable Long requestedId){
+        Optional<Users> userOptional = userRepository.findById(requestedId);
+        if(!userOptional.isPresent()){
+            return null;
+        }
+        return userOptional.get().getTopics();
+    }
+
     @DeleteMapping("/deleteAll")
     private void deleteAll(){
         topicRepository.deleteAll();
+    }
+
+    @DeleteMapping("/delete/{requestedId}")
+    private ResponseEntity<String> deleteById(@PathVariable Long requestedId){
+        Optional<Topics> deleteTopic = topicRepository.findById(requestedId);
+
+        if(deleteTopic.isPresent()){
+            return ResponseEntity.badRequest().body("Failed to delete");
+        }
+        topicRepository.delete(deleteTopic.get());
+        return ResponseEntity.ok().body("Deleted Successfully");     
     }
 }
