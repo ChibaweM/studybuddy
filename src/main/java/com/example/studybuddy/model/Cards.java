@@ -19,6 +19,5 @@ public class Cards {
     private Long Id;
     private String question;
     private String answer;
-    @ManyToOne
-    private Topics topic;
+    private Long topicId;
 }

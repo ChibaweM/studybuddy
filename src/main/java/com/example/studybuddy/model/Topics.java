@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -20,11 +21,9 @@ public class Topics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String topicName;
-
-
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "topicId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cards> cards;
+    private Long userId;
 
-    @ManyToOne
-    private Users user;
+
 }
