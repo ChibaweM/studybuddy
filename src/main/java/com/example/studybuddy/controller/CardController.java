@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.studybuddy.model.Cards;
 import com.example.studybuddy.model.Topics;
-import com.example.studybuddy.model.Users;
 import com.example.studybuddy.repository.CardRepository;
 import com.example.studybuddy.repository.TopicRepository;
 
