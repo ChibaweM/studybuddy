@@ -1,6 +1,5 @@
 package com.example.studybuddy.controller;
 
-
 import com.example.studybuddy.model.Users;
 import com.example.studybuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
